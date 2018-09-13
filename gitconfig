@@ -1,0 +1,44 @@
+[user]
+  name = Marcelo Miranda
+  email = marcelo.caridade@protonmail.com
+
+[color]
+  ui = true
+
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+
+[color "diff"]
+  meta = yellow bold
+  frag = magenta bold
+  old = red
+  new = green
+
+[alias]
+  a = add
+
+  b = branch -v
+
+  c = commit -m
+  ca = commit -am
+  amend = commit --amend
+
+  co = checkout
+
+  d = diff
+
+  l = log
+
+  pl = pull
+
+  ps = push
+
+  rc = rebase --continue
+  rs = rebase --skip
+
+  s = status
+
+[core]
+  editor = nvim

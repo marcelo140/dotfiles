@@ -1,0 +1,47 @@
+URxvt.font: xft:Fira Code:size=9, xft:Hack:size=9
+URxvt.scrollBar: false
+
+! Perl extensions
+URxvt.perl-ext: default,clipboard,url-select,resize-font
+
+! Font resize on the fly
+URxvt.keysym.C-minus	resize-font:smaller
+URxvt.keysym.C-plus		resize-font:bigger
+URxvt.keysym.C-equal	resize-font:reset
+
+! Yankable URLs
+URxvt.keysym.M-u: perl:url-select:select_next
+URxvt.url-select.launcher: /usr/bin/xdg-open
+URxvt.url-select.underline: true
+
+! Base16 Eighties
+! Scheme: Chris Kempson (http://chriskempson.com)
+
+*.color0:       #2d2d2d
+*.color1:       #f2777a
+*.color2:       #99cc99
+*.color3:       #ffcc66
+*.color4:       #6699cc
+*.color5:       #cc99cc
+*.color6:       #66cccc
+*.color7:       #d3d0c8
+
+*.color8:       #747369
+*.color9:       #f99157
+*.color10:      #393939
+*.color11:      #515151
+*.color12:      #a09f93
+*.color13:      #e8e6df
+*.color14:      #d27b53
+*.color15:      #f2f0ec
+
+*.color16:      #f99157
+*.color17:      #d27b53
+*.color18:      #393939
+*.color19:      #515151
+*.color20:      #a09f93
+*.color21:      #e8e6df
+
+*.foreground:   #d3d0c8
+*.background:   #2d2d2d
+*.cursorColor:  #d3d0c8
