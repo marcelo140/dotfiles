@@ -23,15 +23,19 @@ set splitbelow
 colorscheme onedark
 
 " Reloads vim settings
-command! Reload source $MYVIMRC
+command! Rl source $MYVIMRC
+
+set timeoutlen=500
 
 " Rename current file
 function! Rename()
   let current = expand('%')
-  let new_file = input('New name: ')
+  let new_file = input('New name: ', current)
   if new_file != current && new_file != ''
     exec ':saveas ' . new_file
     exec ':silent !rm ' . current
     redraw!
   endif
 endfunction
+
+command! Rn call Rename()

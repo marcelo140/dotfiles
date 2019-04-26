@@ -17,3 +17,5 @@ alias r='rails'
 alias o='xdg-open'
 
 alias be='bundle exec'
+alias cb='xclip -selection clipboard'
+alias pc='gpg-connect-agent reloadagent /bye'
