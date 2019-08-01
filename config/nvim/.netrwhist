@@ -1,9 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =7
-let g:netrw_dirhist_1='/home/escolhido/forkit-back/lib'
-let g:netrw_dirhist_2='/home/escolhido/forkit-back/lib/forkit'
-let g:netrw_dirhist_3='/home/escolhido/forkit-back/lib/forkit/payments'
-let g:netrw_dirhist_4='/home/escolhido/forkit-back/test/forkit/payments'
-let g:netrw_dirhist_5='/home/escolhido/downloads/XMind Pro 8 Pro 3.7.4 Build 201709040350 + serial - Crackingpatching.com/Fix & Read Info/XMind.ini'
-let g:netrw_dirhist_6='/home/escolhido/.local/bin/xmind'
-let g:netrw_dirhist_7='/home/escolhido/krypton/android/gradle'
