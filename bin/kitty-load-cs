@@ -1,0 +1,15 @@
+#/bin/bash
+
+kitty_conf="$DOTFILES/config/kitty"
+
+current_cs_path=$kitty_conf/current-colorscheme
+light_cs_path=$kitty_conf/light-colorscheme
+dark_cs_path=$kitty_conf/dark-colorscheme
+
+current_cs=$(<$current_cs_path)
+
+if [ "$current_cs" = "dark" ]; then
+    kitty @set-colors $@ $dark_cs_path
+else
+    kitty @set-colors $@ $light_cs_path
+fi

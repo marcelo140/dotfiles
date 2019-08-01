@@ -36,3 +36,6 @@ zstyle ':completion:*:approximate:*' max-errors 1 numeric
 # man
 zstyle ':completion:*:manuals' separate-sections true
 zstyle ':completion:*:manuals.(^1*)' insert-sections true
+
+# kitty
+kitty + complete setup zsh | source /dev/stdin
