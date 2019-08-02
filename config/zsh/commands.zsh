@@ -23,3 +23,15 @@ alias cf=' cf'
 aget() {
     wget --no-glob $(downloader $1)
 }
+
+swap-cs() {
+    current_cs=$(<$CURRENT_CS_PATH)
+
+    if [ "$current_cs" = "dark" ]; then
+        kitty @set-colors -c -a $LIGHT_CS_PATH
+        echo "light" > $CURRENT_CS_PATH
+    else
+        kitty @set-colors -c -a $DARK_CS_PATH
+        echo "dark" > $CURRENT_CS_PATH
+    fi
+}

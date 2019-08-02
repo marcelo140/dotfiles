@@ -20,7 +20,9 @@ set cursorline
 set splitright
 set splitbelow
 
-colorscheme onedark
+set termguicolors
+set background=dark
+colorscheme gruvbox
 
 " Reloads vim settings
 command! Rl source $MYVIMRC
