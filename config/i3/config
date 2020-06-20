@@ -42,7 +42,7 @@ bindsym XF86AudioNext  exec playerctl next
 bindsym XF86AudioPrev  exec playerctl previous
 
 # start a terminal
-bindsym $mod+Return exec kitty -1
+bindsym $mod+Return exec kitty 
 
 # kill focused window
 bindsym $mod+w kill
@@ -132,7 +132,7 @@ client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 client.background       #ffffff
 
 bar {
-    status_command i3blocks -c $HOME/.config/i3/i3blocks
+    status_command "i3blocks -c ~/.dotfiles/config/i3blocks/config"
     height 30
 
     mode hide

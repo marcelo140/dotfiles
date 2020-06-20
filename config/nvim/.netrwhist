@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =4
+let g:netrw_dirhist_4='/home/escolhido/projects/graphil'
+let g:netrw_dirhist_3='/home/escolhido/projects/graphil/graphil-svg/src'
+let g:netrw_dirhist_2='/home/escolhido/projects/graphil/svg-playground'
+let g:netrw_dirhist_1='/home/escolhido/projects/graphil'
+let g:netrw_dirhist_0='/home/escolhido/projects/graphil/svg-generator'
+let g:netrw_dirhist_9='/home/escolhido/music'
+let g:netrw_dirhist_8='/home/escolhido/projects/length-extension/src'
+let g:netrw_dirhist_7='/home/escolhido/projects/auth/lib'
+let g:netrw_dirhist_6='/home/escolhido/projects'
+let g:netrw_dirhist_5='/home/escolhido/projects/auth/lib'

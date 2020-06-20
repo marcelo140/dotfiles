@@ -2,12 +2,11 @@ export LS_COLORS='di=1;34:fi=0:ln=31:pi=5:so=5:bd=5:cd=5:or=31:mi=0:ex=35:*.rpm=
 export EDITOR=nvim
 export ANDROID_HOME=$HOME/Android/Sdk
 
+export GOPATH="$HOME/.go"
+
 export PATH="$DOTFILES/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
-export PATH=$PATH:$ANDROID_HOME/emulator
-export PATH=$PATH:$ANDROID_HOME/tools
-export PATH=$PATH:$ANDROID_HOME/tools/bin
-export PATH=$PATH:$ANDROID_HOME/platform-tools
+export PATH="$GOPATH/bin:$PATH"
 
 export WORDCHARS='' # '/' behave like word separators
 

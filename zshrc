@@ -12,8 +12,4 @@ source $HOME/.config/zsh/aliases.zsh
 [[ -x $(command -v fasd)  ]] && source $HOME/.config/zsh/fasd.zsh
 [[ -x $(command -v fzf)   ]] && source $HOME/.config/zsh/fzf.zsh
 
-# THESIS
-export SALT_HOME="/home/escolhido/th/app/backend/salt/SALT_PROJECT"
-export PATH=$PATH:/opt/bin
-
 kitty-load-cs
