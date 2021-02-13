@@ -21,11 +21,8 @@ set splitright
 set splitbelow
 
 " set termguicolors
-set background=dark
-colorscheme onedark
-
 colorscheme gruvbox
-set background=light
+set background=dark
 
 " Reloads vim settings
 command! Rl source $MYVIMRC

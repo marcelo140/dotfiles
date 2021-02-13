@@ -19,6 +19,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Miscellaneous
 Plug 'tpope/vim-fugitive'
 " Plug 'tpope/vim-rhubarb'
+Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'joshdick/onedark.vim'
 Plug 'morhetz/gruvbox'
@@ -28,7 +29,7 @@ Plug 'junegunn/goyo.vim'
 " Languages
 Plug 'sheerun/vim-polyglot'
 " Plug 'tpope/vim-rails'
-Plug 'lervag/vimtex'
+" Plug 'lervag/vimtex'
 call plug#end()
 
 let g:airline_powerline_fonts = 1

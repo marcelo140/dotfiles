@@ -20,10 +20,6 @@ cf() {
 
 alias cf=' cf'
 
-aget() {
-    wget --no-glob $(downloader $1)
-}
-
 swap-cs() {
     current_cs=$(<$CURRENT_CS_PATH)
 
