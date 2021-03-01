@@ -18,7 +18,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Miscellaneous
 Plug 'tpope/vim-fugitive'
-" Plug 'tpope/vim-rhubarb'
+Plug 'tpope/vim-rhubarb'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'joshdick/onedark.vim'
