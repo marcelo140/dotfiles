@@ -14,8 +14,10 @@ source $HOME/.config/zsh/fasd.zsh
 source $HOME/.config/zsh/fzf.zsh
 
 source /usr/local/opt/asdf/asdf.sh
-source /usr/local/bin/virtualenvwrapper.sh
+[[ -x $(command -v virtualenv) ]] && source /usr/local/bin/virtualenvwrapper.sh
 
-source "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
-source "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+if [[ -f "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk" ]]; then
+    source "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+    source "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+fi
 
