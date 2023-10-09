@@ -1,9 +1,0 @@
-#/bin/bash
-
-current_cs=$(<$CURRENT_CS_PATH)
-
-if [ "$current_cs" = "dark" ]; then
-    kitty @set-colors $@ $DARK_CS_PATH
-else
-    kitty @set-colors $@ $LIGHT_CS_PATH
-fi
