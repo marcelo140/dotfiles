@@ -13,9 +13,4 @@ alias '..2'='cd ../..'
 alias '..3'='cd ../../..'
 
 alias g='git'
-alias r='rails'
-alias o='xdg-open'
 
-alias be='bundle exec'
-alias cb='xclip -selection clipboard'
-alias pc='gpg-connect-agent reloadagent /bye'
