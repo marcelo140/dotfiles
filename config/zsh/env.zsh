@@ -12,3 +12,4 @@ export PATH="$SCALA_HOME/bin:$PATH"
 
 export WORDCHARS='' # '/' behave like word separators
 
+source "$HOME/.cargo/env"
