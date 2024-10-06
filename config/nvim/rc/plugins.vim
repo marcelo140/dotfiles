@@ -19,6 +19,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Miscellaneous
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
+Plug 'shumphrey/fugitive-gitlab.vim'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'joshdick/onedark.vim'
@@ -28,6 +29,7 @@ Plug 'junegunn/goyo.vim'
 
 " Languages
 Plug 'sheerun/vim-polyglot'
+Plug 'gurpreetatwal/vim-avro'
 " Plug 'tpope/vim-rails'
 " Plug 'lervag/vimtex'
 call plug#end()
