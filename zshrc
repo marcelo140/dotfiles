@@ -1,6 +1,6 @@
 export DOTFILES="$HOME/.dotfiles"
 
-source /opt/homebrew/opt/antidote/share/antidote/antidote.zsh
+source $(brew --prefix antidote)/share/antidote/antidote.zsh
 antidote load
 
 source $HOME/.config/zsh/env.zsh
