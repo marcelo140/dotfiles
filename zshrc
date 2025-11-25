@@ -13,3 +13,6 @@ source $HOME/.config/zsh/fzf.zsh
 source $(brew --prefix asdf)/libexec/asdf.sh
 
 bindkey -e
+
+[[ -f ~/.private-zshrc ]] && source ~/.private-zshrc
+
