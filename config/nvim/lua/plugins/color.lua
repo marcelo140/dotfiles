@@ -10,4 +10,7 @@ return {
             vim.cmd.colorscheme("rose-pine-moon")
 		end
 	},
+    {
+        "folke/tokyonight.nvim"
+    }
 }

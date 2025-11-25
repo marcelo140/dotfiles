@@ -14,3 +14,5 @@ alias '..3'='cd ../../..'
 
 alias g='git'
 
+alias docker='podman'
+alias d='podman'

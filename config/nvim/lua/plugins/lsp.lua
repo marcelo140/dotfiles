@@ -21,9 +21,10 @@ return {
         require("mason").setup()
         require("mason-lspconfig").setup()
 
-		require('lspconfig').lua_ls.setup({})
-		require('lspconfig').rust_analyzer.setup{}
-        require('lspconfig').jdtls.setup{ cmd = { 'jdtls' } }
+		vim.lsp.config("lua_ls", {})
+
+        vim.keymap.set('n', '<C-w><C-e>', vim.lsp.buf.code_action, { desc = "LSP code action" })
+        vim.keymap.set('n', '<C-w><C-r>', vim.lsp.buf.rename, { desc = "LSP rename" })
 
 		local cmp = require'cmp'
         -- local cmp_lsp = require("cmp_nvim_lsp")
@@ -87,9 +88,9 @@ return {
 		-- Set up lspconfig.
 		local capabilities = require('cmp_nvim_lsp').default_capabilities()
 		-- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-		require('lspconfig')['rust_analyzer'].setup {
+		vim.lsp.config('rust_analyzer', {
 			capabilities = capabilities
-		}
+		})
 	end
 }
 

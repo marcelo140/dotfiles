@@ -12,7 +12,4 @@ source $HOME/.config/zsh/fzf.zsh
 
 source $(brew --prefix asdf)/libexec/asdf.sh
 
-if [[ -f ~/.five9.zsh ]]; then
-    source ~/.five9.zsh
-fi
-
+bindkey -e
