@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+# Check for required tools
+if ! command -v jq &> /dev/null; then
+    echo "Error: 'jq' is required but not installed. Please install it." >&2
+    exit 1
+fi
+
+# Read the entire standard input into the TOKEN variable
+TOKEN=$(cat -)
+
+# --- Base64URL Decoding Function ---
+# JWTs use Base64URL encoding, which substitutes '+' with '-', '/' with '_'
+# and removes padding '='. This function reverses that to allow standard base64 decoding.
+base64url_decode() {
+    # 1. Substitute '-' with '+' and '_' with '/'
+    # 2. Add padding '=' back (base64 requires length divisible by 4)
+    # 3. Base64 decode the result
+    local input_string="$1"
+    
+    # Add padding characters (=) back until length is divisible by 4
+    remainder=$((${#input_string} % 4))
+    if [ "$remainder" -eq 2 ]; then
+        input_string="${input_string}=="
+    elif [ "$remainder" -eq 3 ]; then
+        input_string="${input_string}="
+    fi
+
+    # Perform decoding using 'tr' and 'base64' (or 'openssl base64 -d')
+    echo "$input_string" | tr '_-' '/+' | base64 -d 2>/dev/null
+}
+
+DECODED_PAYLOAD=$(base64url_decode $(echo $TOKEN | cut -d. -f2))
+
+# Decode and print Payload (The body)
+if [ -n "$DECODED_PAYLOAD" ]; then
+    echo "$DECODED_PAYLOAD" | jq
+else
+    echo "Error: Could not decode JWT Payload."
+fi
+

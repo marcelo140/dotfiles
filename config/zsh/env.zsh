@@ -9,7 +9,9 @@ export GOPATH="$HOME/.go"
 
 export PATH="$DOTFILES/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="$GOPATH/bin:$PATH"
+export PATH="$(python3 -m site --user-base)/bin:$PATH"
+export PATH="$(asdf where golang)/bin:$PATH"
+export PATH="$(asdf where nodejs)/bin:$PATH"
 export PATH="$(brew --prefix)/bin:$PATH"
 
 export WORDCHARS='' # '/' behave like word separators
