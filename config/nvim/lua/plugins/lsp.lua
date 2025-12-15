@@ -23,8 +23,8 @@ return {
 
 		vim.lsp.config("lua_ls", {})
 
-        vim.keymap.set('n', '<C-w><C-e>', vim.lsp.buf.code_action, { desc = "LSP code action" })
         vim.keymap.set('n', '<C-w><C-r>', vim.lsp.buf.rename, { desc = "LSP rename" })
+        vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = 0, desc = 'LSP Hover Documentation' })
 
 		local cmp = require'cmp'
         -- local cmp_lsp = require("cmp_nvim_lsp")

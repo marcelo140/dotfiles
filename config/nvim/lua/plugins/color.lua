@@ -6,11 +6,18 @@ return {
 
 		config = function()
 			require('rose-pine').setup({ })
-
-            vim.cmd.colorscheme("rose-pine-moon")
 		end
 	},
     {
         "folke/tokyonight.nvim"
+    },
+    {
+        "ellisonleao/gruvbox.nvim",
+
+        config = function()
+            require("gruvbox").setup {}
+            vim.cmd.colorscheme("gruvbox")
+        end
     }
 }
+
