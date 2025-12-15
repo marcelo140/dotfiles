@@ -5,3 +5,6 @@ keybind = super+alt+k=goto_split:up
 
 keybind = alt+b=esc:b
 keybind = alt+f=esc:f
+
+keybind = shift+enter=text:\n
+
