@@ -15,3 +15,4 @@ bindkey -e
 
 [[ -f ~/.private-zshrc ]] && source ~/.private-zshrc
 
+eval "$(zoxide init zsh)"
