@@ -9,17 +9,9 @@ source $HOME/.config/zsh/completion.zsh
 source $HOME/.config/zsh/aliases.zsh
 
 source $HOME/.config/zsh/fzf.zsh
-
 source $(brew --prefix asdf)/libexec/asdf.sh
 
 bindkey -e
 
 [[ -f ~/.private-zshrc ]] && source ~/.private-zshrc
 
-source ~/.bashrc
-
-export RUSTFLAGS="-L/opt/homebrew/opt/libpq/lib"
-
-
-# Added by Windsurf
-export PATH="/Users/mmiranda/.codeium/windsurf/bin:$PATH"

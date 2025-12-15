@@ -2,3 +2,6 @@ keybind = super+alt+j=goto_split:down
 keybind = super+alt+h=goto_split:left
 keybind = super+alt+l=goto_split:right
 keybind = super+alt+k=goto_split:up
+
+keybind = alt+b=esc:b
+keybind = alt+f=esc:f
