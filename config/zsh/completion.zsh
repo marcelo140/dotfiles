@@ -1,4 +1,4 @@
-ZSH_COMPDUMP="${ZDOTDIR:-$HOME}/zcompdump"
+ZSH_COMPDUMP="$HOME/.zcompdump"
 
 autoload -Uz compinit
 
