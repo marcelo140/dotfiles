@@ -1,8 +1,6 @@
 export DOTFILES="$HOME/.dotfiles"
 
-source $(brew --prefix antidote)/share/antidote/antidote.zsh
-antidote load $DOTFILES/zsh_plugins.txt
-
+source $HOME/.config/zsh/antibody.zsh
 source $HOME/.config/zsh/env.zsh
 source $HOME/.config/zsh/history.zsh
 source $HOME/.config/zsh/completion.zsh
@@ -16,3 +14,5 @@ bindkey -e
 [[ -f ~/.private-zshrc ]] && source ~/.private-zshrc
 
 eval "$(zoxide init zsh)"
+eval "$(starship init zsh)"
+

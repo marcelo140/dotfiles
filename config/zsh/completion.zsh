@@ -1,4 +1,16 @@
-autoload -Uz compinit && compinit -i
+ZSH_COMPDUMP="${ZDOTDIR:-$HOME}/zcompdump"
+
+autoload -Uz compinit
+
+# If the compdump and the compiled dump file exist, and they are newer than all completion files
+if [[ -f "$ZSH_COMPDUMP" && -f "$ZSH_COMPDUMP.zwc" ]] && ! command find "${fpath[@]}" -maxdepth 0 -newer "$ZSH_COMPDUMP" 2>/dev/null | grep -q .; then
+    # Load the compiled dump file and skip all checks
+    compinit -C -d "$ZSH_COMPDUMP" -i
+else
+    # Load the normal way and compile the dump file
+    compinit -d "$ZSH_COMPDUMP" -i
+    zcompile "$ZSH_COMPDUMP"
+fi
 
 setopt COMPLETE_IN_WORD    # Complete from both ends of a word.
 setopt ALWAYS_TO_END       # Move cursor to the end of a completed word.
