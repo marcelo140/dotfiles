@@ -15,6 +15,8 @@ return {
 		"saadparwaiz1/cmp_luasnip",
 
 		"j-hui/fidget.nvim",
+
+        "nvim-lint",
 	},
 
 	config = function()

@@ -3,7 +3,7 @@ return {
 
 	dependencies = {
 		'nvim-lua/plenary.nvim',
-        -- 'nvim-telescope/telescope-ui-select.nvim',
+        'nvim-telescope/telescope-ui-select.nvim',
 	},
 
 	config = function()
@@ -27,7 +27,9 @@ return {
 
         vim.keymap.set("n", "<leader>lr", builtin.lsp_references, { noremap = true, silent = true })
         vim.keymap.set("n", "<leader>li", builtin.lsp_implementations, { noremap = true, silent = true })
-        vim.keymap.set("n", "<leader>lt", builtin.treesitter, { noremap = true, silent = true })
+        vim.keymap.set("n", "<leader>lt", function()
+            require('telescope.builtin').lsp_document_symbols({ symbols = { 'Function', 'Method' } })
+        end, { noremap = true, silent = true })
         vim.keymap.set("n", "<leader>le", builtin.diagnostics, { noremap = true, silent = true })
         vim.keymap.set("n", "<leader>lq", builtin.quickfix, { noremap = true, silent = true })
 	end

@@ -1,0 +1,22 @@
+#!/bin/bash
+
+git fetch --prune
+BRANCHES=$(git branch -vv | grep ': gone]' | awk '{print $1}')
+
+if [ -z "$BRANCHES" ]; then
+    echo "✨ All clear! No dead branches found."
+    exit
+fi
+
+echo "⚠️  The following branches are gone on remote:"
+echo "$BRANCHES"
+echo ""
+read -p "Delete these local branches? (y/n) " -n 1 -r
+echo ""
+
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    echo "$BRANCHES" | xargs git branch -d
+    echo "✅ Cleanup complete."
+else
+    echo "❌ Operation cancelled."
+fi

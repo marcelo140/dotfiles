@@ -1,0 +1,9 @@
+#!/bin/bash
+
+selected_container=$(docker ps --format '{{.Names}}' | fzf --height 40% --layout=reverse --prompt="Container > ")
+
+if [ -n "$selected_container" ]; then
+    docker exec -it "$selected_container" /bin/bash
+else
+    echo "No container selected."
+fi
