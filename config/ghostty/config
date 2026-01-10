@@ -1,3 +1,5 @@
+theme = Catppuccin Frappe
+
 keybind = super+alt+j=goto_split:down
 keybind = super+alt+h=goto_split:left
 keybind = super+alt+l=goto_split:right
@@ -7,4 +9,5 @@ keybind = alt+b=esc:b
 keybind = alt+f=esc:f
 
 keybind = shift+enter=text:\n
+keybind = ctrl+enter=text:\n
 

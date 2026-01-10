@@ -22,6 +22,7 @@ return {
 	config = function()
         require("mason").setup()
         require("mason-lspconfig").setup()
+        require("fidget").setup()
 
 		vim.lsp.config("lua_ls", {})
 

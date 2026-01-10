@@ -4,3 +4,6 @@ diverged = "⇡⇣"
 [package]
 disabled = true
 
+[gcloud]
+disabled = true
+
