@@ -4,6 +4,6 @@ return {
     version = '*',
 
     config = function()
-        require('mini.surround').setup()
+        -- require('mini.surround').setup()
     end
 }
