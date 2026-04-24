@@ -26,7 +26,21 @@ return {
 
 		vim.lsp.config("lua_ls", {})
 
-        vim.keymap.set('n', '<C-w><C-r>', vim.lsp.buf.rename, { desc = "LSP rename" })
+		vim.lsp.config("gopls", {
+			settings = {
+				gopls = {
+					buildFlags = {"-tags=integration,e2e,benchmark,sentrytest"},
+				},
+			},
+		})
+
+        vim.keymap.set('n', '<C-w><C-r>', function()
+            vim.lsp.buf.rename()
+            -- Auto-save all modified buffers after rename completes
+            vim.defer_fn(function()
+                vim.cmd('wa')
+            end, 100)
+        end, { desc = "LSP rename and save all" })
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = 0, desc = 'LSP Hover Documentation' })
 
 		local cmp = require'cmp'

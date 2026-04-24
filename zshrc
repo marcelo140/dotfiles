@@ -16,3 +16,4 @@ bindkey -e
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 
+export PATH="/Users/mmiranda/.asdf/installs/golang/1.25.0/bin:$PATH"
