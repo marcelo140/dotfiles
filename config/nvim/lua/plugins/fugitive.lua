@@ -10,6 +10,10 @@ return {
 		vim.keymap.set("n", "<leader>ps", vim.cmd.Git)
         vim.g.fugitive_gitlab_domains = { "https://gitlab.com", "https://gitlab.cfdata.org/" }
 
+        vim.api.nvim_create_user_command("DiffviewOpenPrev", function()
+            vim.cmd("DiffviewOpen HEAD^..HEAD")
+        end, { desc = "Diff the last commit (HEAD^ vs HEAD)" })
+
         require("diffview").setup({
             enhanced_diff_hl = true, -- Better syntax highlighting for diffs
             use_icons = true,        -- Requires nvim-web-devicons

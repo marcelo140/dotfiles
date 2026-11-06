@@ -10,7 +10,12 @@ return {
 
   config = function()
       local lint = require("lint")
-      require("mason-nvim-lint").setup()
+      require("mason-nvim-lint").setup({
+          -- golangci-lint is managed via Homebrew instead of Mason to avoid
+          -- two separate installs silently drifting out of sync (Mason's copy
+          -- got stuck on an old, buggy version while `brew upgrade` moved on).
+          ignore_install = { "golangcilint" },
+      })
 
       lint.linters_by_ft = {
           go = { "golangcilint" } 

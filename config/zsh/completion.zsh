@@ -1,5 +1,6 @@
 ZSH_COMPDUMP="$HOME/.zcompdump"
 
+fpath=(/opt/homebrew/opt/asdf/share/zsh/site-functions $fpath)
 autoload -Uz compinit
 
 # If the compdump and the compiled dump file exist, and they are newer than all completion files

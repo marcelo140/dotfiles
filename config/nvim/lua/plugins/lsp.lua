@@ -24,6 +24,15 @@ return {
         require("mason-lspconfig").setup()
         require("fidget").setup()
 
+		for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+			local name = vim.api.nvim_buf_get_name(bufnr)
+			if name:match("^diffview://") or name:match("^fugitive://") then
+				for _, client in ipairs(vim.lsp.get_clients({ bufnr = bufnr })) do
+					vim.lsp.buf_detach_client(bufnr, client.id)
+				end
+			end
+		end
+
 		vim.lsp.config("lua_ls", {})
 
 		vim.lsp.config("gopls", {
@@ -42,6 +51,21 @@ return {
             end, 100)
         end, { desc = "LSP rename and save all" })
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = 0, desc = 'LSP Hover Documentation' })
+
+		vim.api.nvim_create_autocmd("LspAttach", {
+			group = vim.api.nvim_create_augroup("lsp-buffer-guards", { clear = true }),
+			callback = function(args)
+				local client = vim.lsp.get_client_by_id(args.data.client_id)
+				if not client then
+					return
+				end
+
+				local size = vim.api.nvim_buf_get_offset(args.buf, vim.api.nvim_buf_line_count(args.buf))
+				if client.name == "gopls" and size > 100000 then
+					vim.lsp.semantic_tokens.enable(false, { bufnr = args.buf, client_id = client.id })
+				end
+			end,
+		})
 
 		local cmp = require'cmp'
         -- local cmp_lsp = require("cmp_nvim_lsp")
@@ -110,4 +134,3 @@ return {
 		})
 	end
 }
-

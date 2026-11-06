@@ -6,9 +6,9 @@ export WORDCHARS='' # '/' behave like word separators
 
 export PATH="$DOTFILES/bin:$PATH"
 export PATH="$(python3 -m site --user-base)/bin:$PATH"
-export PATH="$(asdf where golang)/bin:$PATH"
-export PATH="$(asdf where nodejs)/bin:$PATH"
 export PATH="$(brew --prefix)/bin:$PATH"
 export PATH="$HOME/.codeium/windsurf/bin:$PATH"
 
 source "$HOME/.cargo/env"
+
+export PATH="$HOME/.asdf/shims:$PATH"

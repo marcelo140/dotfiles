@@ -1,23 +1,282 @@
 #!/bin/bash
 
-echo "Pruning local branches..."
-git fetch --prune
-BRANCHES=$(git branch -vv | grep ': gone]' | awk '{print $1}')
+set -u
 
-if [ -z "$BRANCHES" ]; then
-    echo "✨ All clear! No dead branches found."
-    exit
+readonly INACTIVE_DAYS=14
+readonly SECONDS_PER_DAY=86400
+
+force=false
+
+case "${1:-}" in
+    "")
+        ;;
+    -f|--force)
+        force=true
+        ;;
+    -h|--help)
+        printf 'Usage: %s [-f|--force]\n' "${0##*/}"
+        printf '  -f, --force  remove eligible worktrees even when they are dirty\n'
+        exit 0
+        ;;
+    *)
+        printf 'Usage: %s [-f|--force]\n' "${0##*/}" >&2
+        exit 2
+        ;;
+esac
+
+echo "Pruning local branches and worktrees..."
+if ! git fetch --prune; then
+    echo "⚠️  Fetch failed; continuing with the local repository state."
 fi
 
-echo "⚠️  The following branches are gone on remote:"
-echo "$BRANCHES"
-echo ""
-read -p "Delete these local branches? (y/n) " -n 1 -r
-echo ""
+current_worktree=$(git rev-parse --show-toplevel 2>/dev/null || true)
+current_branch=$(git symbolic-ref --quiet --short HEAD 2>/dev/null || true)
 
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-    echo "$BRANCHES" | xargs git branch -D
-    echo "✅ Cleanup complete."
+default_ref=$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null || true)
+if [[ -z "$default_ref" ]] && git show-ref --verify --quiet refs/remotes/origin/main; then
+    default_ref=origin/main
+fi
+if [[ -z "$default_ref" ]] && git show-ref --verify --quiet refs/remotes/origin/master; then
+    default_ref=origin/master
+fi
+if [[ -z "$default_ref" ]] && git show-ref --verify --quiet refs/heads/main; then
+    default_ref=main
+fi
+if [[ -z "$default_ref" ]] && git show-ref --verify --quiet refs/heads/master; then
+    default_ref=master
+fi
+if [[ -z "$default_ref" ]]; then
+    default_ref=$current_branch
+fi
+
+if [[ "$default_ref" == */* ]]; then
+    default_local_branch=${default_ref#*/}
 else
-    echo "❌ Operation cancelled."
+    default_local_branch=$default_ref
 fi
+
+now=$(date +%s)
+cutoff=$((now - INACTIVE_DAYS * SECONDS_PER_DAY))
+
+candidate_paths=()
+candidate_branches=()
+candidate_reasons=()
+candidate_force=()
+skipped_paths=()
+skipped_branches=()
+skipped_reasons=()
+worktree_branches=()
+
+append_reason() {
+    local current_reason=$1
+    local new_reason=$2
+
+    if [[ -n "$current_reason" ]]; then
+        printf '%s; %s' "$current_reason" "$new_reason"
+    else
+        printf '%s' "$new_reason"
+    fi
+}
+
+add_candidate() {
+    candidate_paths+=("$1")
+    candidate_branches+=("$2")
+    candidate_reasons+=("$3")
+    candidate_force+=("${4:-false}")
+}
+
+add_skipped() {
+    skipped_paths+=("$1")
+    skipped_branches+=("$2")
+    skipped_reasons+=("$3")
+}
+
+is_worktree_branch() {
+    local branch=$1
+    local worktree_branch
+
+    [[ ${#worktree_branches[@]} -eq 0 ]] && return 1
+
+    for worktree_branch in "${worktree_branches[@]}"; do
+        if [[ "$worktree_branch" == "$branch" ]]; then
+            return 0
+        fi
+    done
+
+    return 1
+}
+
+worktree_has_submodules() {
+    local path=$1
+    local mode object stage submodule_path
+
+    while IFS=' ' read -r mode object stage submodule_path; do
+        if [[ "$mode" == "160000" ]]; then
+            return 0
+        fi
+    done < <(git -C "$path" ls-files --stage)
+
+    return 1
+}
+
+inspect_worktree() {
+    local path=$1
+    local branch=$2
+    local locked=$3
+    local prunable=$4
+    local upstream last_commit_epoch age_days status_output reason requires_force
+
+    [[ -z "$path" ]] && return
+    [[ -n "$branch" ]] && worktree_branches+=("$branch")
+
+    if [[ "$path" == "$current_worktree" || "$locked" == "true" || "$prunable" == "true" || -z "$branch" ]]; then
+        return
+    fi
+    if [[ "$branch" == "$default_local_branch" ]]; then
+        return
+    fi
+
+    reason=""
+    upstream=$(git for-each-ref --format='%(upstream:short)' "refs/heads/$branch")
+    if [[ -n "$upstream" ]] && ! git rev-parse --verify --quiet "$upstream^{commit}" >/dev/null; then
+        reason=$(append_reason "$reason" "upstream gone")
+    fi
+
+    if [[ -n "$default_ref" ]] && git merge-base --is-ancestor "$branch" "$default_ref" 2>/dev/null; then
+        reason=$(append_reason "$reason" "merged into $default_ref")
+    fi
+
+    last_commit_epoch=$(git show -s --format=%ct "$branch" 2>/dev/null || true)
+    if [[ -n "$last_commit_epoch" && "$last_commit_epoch" -le "$cutoff" ]]; then
+        age_days=$(( (now - last_commit_epoch) / SECONDS_PER_DAY ))
+        reason=$(append_reason "$reason" "inactive for ${age_days} days")
+    fi
+
+    [[ -z "$reason" ]] && return
+
+    requires_force=false
+    if worktree_has_submodules "$path"; then
+        reason=$(append_reason "$reason" "contains submodules (removal requires -f)")
+        requires_force=true
+    fi
+
+    if ! status_output=$(git -C "$path" status --porcelain=v1 --untracked-files=all --ignore-submodules=none 2>/dev/null); then
+        add_skipped "$path" "$branch" "$reason; unable to inspect worktree"
+        return
+    fi
+
+    if [[ -n "$status_output" ]]; then
+        if [[ "$force" == "true" ]]; then
+            add_candidate "$path" "$branch" "$reason; dirty (forced with -f)" true
+        else
+            add_skipped "$path" "$branch" "$reason; dirty (skipped; use -f to delete)"
+        fi
+    else
+        add_candidate "$path" "$branch" "$reason" "$requires_force"
+    fi
+}
+
+worktree_path=""
+worktree_branch=""
+worktree_locked=false
+worktree_prunable=false
+
+while IFS= read -r line || [[ -n "$line" ]]; do
+    if [[ -z "$line" ]]; then
+        inspect_worktree "$worktree_path" "$worktree_branch" "$worktree_locked" "$worktree_prunable"
+        worktree_path=""
+        worktree_branch=""
+        worktree_locked=false
+        worktree_prunable=false
+        continue
+    fi
+
+    case "$line" in
+        worktree\ *)
+            worktree_path=${line#worktree }
+            ;;
+        branch\ refs/heads/*)
+            worktree_branch=${line#branch refs/heads/}
+            ;;
+        locked*)
+            worktree_locked=true
+            ;;
+        prunable*)
+            worktree_prunable=true
+            ;;
+    esac
+done < <(git worktree list --porcelain)
+
+inspect_worktree "$worktree_path" "$worktree_branch" "$worktree_locked" "$worktree_prunable"
+
+# Keep pruning local branches whose remote tracking branch was deleted, even
+# when those branches are not checked out in a worktree.
+while IFS= read -r branch; do
+    [[ -z "$branch" ]] && continue
+    [[ "$branch" == "$current_branch" || "$branch" == "$default_local_branch" ]] && continue
+    is_worktree_branch "$branch" && continue
+
+    upstream=$(git for-each-ref --format='%(upstream:short)' "refs/heads/$branch")
+    if [[ -n "$upstream" ]] && ! git rev-parse --verify --quiet "$upstream^{commit}" >/dev/null; then
+        add_candidate "" "$branch" "upstream gone"
+    fi
+done < <(git for-each-ref --format='%(refname:short)' refs/heads)
+
+if [[ ${#skipped_paths[@]} -gt 0 ]]; then
+    echo ""
+    echo "⚠️  Eligible worktrees skipped:"
+    for ((i = 0; i < ${#skipped_paths[@]}; i++)); do
+        printf '  %s [%s] - %s\n' "${skipped_paths[$i]}" "${skipped_branches[$i]}" "${skipped_reasons[$i]}"
+    done
+fi
+
+if [[ ${#candidate_branches[@]} -eq 0 ]]; then
+    if [[ ${#skipped_paths[@]} -eq 0 ]]; then
+        echo "✨ All clear! No removable branches or worktrees found."
+    fi
+    exit 0
+fi
+
+echo ""
+echo "⚠️  The following branches/worktrees are eligible for deletion:"
+for ((i = 0; i < ${#candidate_branches[@]}; i++)); do
+    if [[ -n "${candidate_paths[$i]}" ]]; then
+        printf '  %s [%s] - %s\n' "${candidate_paths[$i]}" "${candidate_branches[$i]}" "${candidate_reasons[$i]}"
+    else
+        printf '  [branch only] [%s] - %s\n' "${candidate_branches[$i]}" "${candidate_reasons[$i]}"
+    fi
+done
+echo ""
+reply=""
+read -r -p "Delete these branches/worktrees? (y/n) " -n 1 reply
+echo ""
+
+if [[ ! "$reply" =~ ^[Yy]$ ]]; then
+    echo "❌ Operation cancelled."
+    exit 0
+fi
+
+for ((i = 0; i < ${#candidate_branches[@]}; i++)); do
+    path=${candidate_paths[$i]}
+    branch=${candidate_branches[$i]}
+
+    if [[ -n "$path" ]]; then
+        if [[ "$force" == "true" || "${candidate_force[$i]}" == "true" ]]; then
+            if ! git worktree remove -f "$path"; then
+                echo "❌ Failed to remove worktree: $path"
+                continue
+            fi
+        elif ! git worktree remove "$path"; then
+            echo "❌ Failed to remove worktree: $path"
+            continue
+        fi
+    fi
+
+    if git branch -D -- "$branch"; then
+        echo "✅ Deleted $branch"
+    else
+        echo "❌ Failed to delete branch: $branch"
+    fi
+done
+
+echo "✅ Cleanup complete."

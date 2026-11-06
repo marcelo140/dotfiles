@@ -5,3 +5,7 @@ vim.keymap.set("v", "<leader>y", '"+y')
 vim.keymap.set('n', '<leader>yp', function()
   vim.fn.setreg('+', vim.fn.expand('%:.'))
 end, { desc = 'Copy file path (cwd-relative) to clipboard' })
+
+vim.keymap.set('n', '<leader>f', function()
+  vim.lsp.buf.format({ async = true })
+end, { desc = 'Format buffer (LSP)' })

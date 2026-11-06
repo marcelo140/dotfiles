@@ -5,9 +5,9 @@ source $HOME/.config/zsh/env.zsh
 source $HOME/.config/zsh/history.zsh
 source $HOME/.config/zsh/completion.zsh
 source $HOME/.config/zsh/aliases.zsh
+source $HOME/.config/zsh/functions.zsh
 
 source $HOME/.config/zsh/fzf.zsh
-source $(brew --prefix asdf)/libexec/asdf.sh
 
 bindkey -e
 
@@ -15,5 +15,3 @@ bindkey -e
 
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
-
-export PATH="/Users/mmiranda/.asdf/installs/golang/1.25.0/bin:$PATH"
