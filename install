@@ -1,9 +1,8 @@
 #!/bin/bash
 for RC in *; do
-    [[ -f $RC ]] && ln -sf $HOME/.dotfiles/$RC $HOME/.$RC
+    [[ -f $RC ]] && ln -sf "$HOME/.dotfiles/$RC" "$HOME/.$RC"
 done
 
 for RC in config/*; do
-    ln -sf $HOME/.dotfiles/$RC $HOME/.config/
+    ln -sf "$HOME/.dotfiles/$RC" "$HOME/.config/"
 done
-

@@ -108,9 +108,9 @@ is_worktree_branch() {
 
 worktree_has_submodules() {
     local path=$1
-    local mode object stage submodule_path
+    local mode _object _stage _submodule_path
 
-    while IFS=' ' read -r mode object stage submodule_path; do
+    while IFS=' ' read -r mode _object _stage _submodule_path; do
         if [[ "$mode" == "160000" ]]; then
             return 0
         fi
